@@ -1,0 +1,159 @@
+---
+- hosts: all
+  become: yes
+  gather_facts: no
+  vars_files:
+  - vars/{{ stage }}.yml
+  vars:
+    ansible_ssh_pipelining: yes
+  tasks:
+  - name: "Check if zabbix-release is installed"
+    command: "dpkg-query -W zabbix-release"
+    register: zabbix_release_check_deb
+    failed_when: "zabbix_release_check_deb.rc > 1"
+    changed_when: "zabbix_release_check_deb.rc == 1"
+    become: no
+  - name: "Download zabbix-release deb"
+    get_url:
+      url: "https://repo.zabbix.com/zabbix/4.0/debian/pool/main/z/zabbix-release/zabbix-release_4.0-2+stretch_all.deb"
+      dest: "/tmp/zabbix-release_4.0-2+stretch_all.deb"
+      checksum: "sha256:bce4daa131ec9e7005233bb25079d060d2edc457a8e17bf63576b93b8a7cd69e"
+    when: "zabbix_release_check_deb.rc == 1"
+    become: no
+  - name: "Install zabbix-release"
+    apt: deb="/tmp/zabbix-release_4.0-2+stretch_all.deb"
+    when: "zabbix_release_check_deb.rc == 1"
+  - name: "Update cache"
+    apt:
+      update_cache: yes
+    when: "zabbix_release_check_deb.rc == 1"
+  - name: "Install zabbix-server-pgsql"
+    apt:
+      name: "zabbix-server-pgsql"
+
+  - name: "Install packages for ansible"
+    apt:
+      name:
+      - "libpq-dev"
+      - "python-psycopg2"
+  - name: "createuser"
+    become_user: postgres
+    postgresql_user:
+      name: "{{ zbx_dbuser }}"
+      password: "{{ zbx_dbpass }}"
+      role_attr_flags: "NOSUPERUSER,NOCREATEROLE,NOCREATEDB"
+  - name: "createdb"
+    become_user: postgres
+    postgresql_db:
+      name: "{{ zbx_dbname }}"
+      owner: "{{ zbx_dbuser }}"
+    register: createdb
+  - name: "Run create.sql"
+    shell: "zcat /usr/share/doc/zabbix-server-pgsql/create.sql.gz | sudo -u zabbix psql {{ zbx_dbname }}"
+    when: createdb.changed
+
+  - name: "Install zabbix-frontend-php"
+    apt:
+      name:
+      - "zabbix-frontend-php"
+      - "php-pgsql"
+      - "fonts-noto-cjk"
+    notify: reload zabbix-server
+  - name: "Add zabbix-timezone.conf"
+    copy:
+      content: |
+        <Directory "/usr/share/zabbix">
+            <IfModule mod_php7.c>
+                php_value date.timezone Asia/Tokyo
+            </IfModule>
+        </Directory>
+      dest: '/etc/apache2/conf-available/zabbix-timezone.conf'
+      owner: 'root'
+      group: 'root'
+      mode: 0644
+    notify: reload zabbix-server
+  - name: 'a2enconf zabbix-timezone'
+    command: 'a2enconf zabbix-timezone'
+    args:
+      creates: '/etc/apache2/conf-enabled/zabbix-timezone.conf'
+    notify: reload zabbix-server
+  - name: '/etc/zabbix/web/zabbix.conf.php'
+    copy:
+      content: |
+        <?php
+        // Zabbix GUI configuration file.
+        global $DB;
+
+        $DB['TYPE']     = 'POSTGRESQL';
+        $DB['SERVER']   = 'localhost';
+        $DB['PORT']     = '0';
+        $DB['DATABASE'] = '{{ zbx_dbname }}';
+        $DB['USER']     = '{{ zbx_dbuser }}';
+        $DB['PASSWORD'] = '{{ zbx_dbpass }}';
+
+        // Schema name. Used for IBM DB2 and PostgreSQL.
+        $DB['SCHEMA'] = '';
+
+        $ZBX_SERVER      = 'localhost';
+        $ZBX_SERVER_PORT = '10051';
+        $ZBX_SERVER_NAME = '{{ zbx_server_name }}';
+
+        $IMAGE_FORMAT_DEFAULT = IMAGE_FORMAT_PNG;
+      dest: '/etc/zabbix/web/zabbix.conf.php'
+      owner: 'root'
+      group: 'root'
+      mode: 0777
+
+  - name: '/etc/zabbix/zabbix_server.conf.d/'
+    file:
+      path: '/etc/zabbix/zabbix_server.conf.d'
+      owner: 'root'
+      group: 'root'
+      mode: 0755
+      state: directory
+  - name: 'Add "Include" to zabbix_server.conf'
+    lineinfile:
+      path: '/etc/zabbix/zabbix_server.conf'
+      line: 'Include=/etc/zabbix/zabbix_server.conf.d/*.conf'
+    notify: reload zabbix-server
+  - name: "Add database.conf"
+    copy:
+      content: |
+        DBName={{ zbx_dbname }}
+        DBUser={{ zbx_dbuser }}
+        DBPassword={{ zbx_dbpass }}
+      dest: '/etc/zabbix/zabbix_server.conf.d/database.conf'
+      owner: 'root'
+      group: 'zabbix'
+      mode: 0640
+  - name: '/etc/zabbix/externalscripts/'
+    file:
+      path: '/etc/zabbix/externalscripts'
+      owner: 'root'
+      group: 'root'
+      mode: 0755
+      state: directory
+  - name: 'Add local.conf'
+    copy:
+      content: |
+        StartPingers=3
+        Timeout=30
+        ExternalScripts=/etc/zabbix/externalscripts
+      dest: '/etc/zabbix/zabbix_server.conf.d/local.conf'
+      owner: 'root'
+      group: 'zabbix'
+      mode: 0644
+
+  - name: "Install zabbix-agent"
+    apt:
+      name: "zabbix-agent"
+
+  handlers:
+  - name: reload apache2
+    systemd:
+      name: apache2
+      state: reloaded
+  - name: reload zabbix-server
+    systemd:
+      name: zabbix-server
+      state: reloaded

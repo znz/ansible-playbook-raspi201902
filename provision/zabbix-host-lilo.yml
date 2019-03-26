@@ -1,0 +1,31 @@
+---
+- hosts: all
+  become: no
+  gather_facts: no
+  vars_files:
+  - vars/{{ stage }}.yml
+
+  tasks:
+  - name: '3 lilo.linux.or.jp'
+    zabbix_host:
+      host_groups:
+      - '1 Certificate'
+      - '1 ping監視'
+      - '1 VPS'
+      host_name: '3 lilo.linux.or.jp'
+      interfaces:
+      - dns: 'lilo.linux.or.jp'
+        ip: ''
+        main: 1
+        port: 10050
+        type: agent
+        useip: 0
+      link_templates:
+      - 'Template Module ICMP Ping'
+      - '0 My Template App HTTPS Certificate'
+      login_user: "{{ zbx_login_user }}"
+      login_password: "{{ zbx_login_password }}"
+      # proxy:
+      server_url: "{{ zbx_server_url }}"
+      state: present
+      status: enabled

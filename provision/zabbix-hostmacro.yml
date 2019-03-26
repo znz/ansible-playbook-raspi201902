@@ -1,0 +1,19 @@
+---
+- hosts: all
+  become: no
+  gather_facts: no
+  vars_files:
+  - vars/{{ stage }}.yml
+
+  tasks:
+  - name: 'zabbix hostmacro'
+    with_items: '{{ zbx_hostmacros }}'
+    zabbix_hostmacro:
+      host_name: '{{ item.host_name }}'
+      macro_name: '{{ item.macro_name }}'
+      macro_value: '{{ item.macro_value }}'
+      login_user: "{{ zbx_login_user }}"
+      login_password: "{{ zbx_login_password }}"
+      # proxy:
+      server_url: "{{ zbx_server_url }}"
+      state: present

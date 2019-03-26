@@ -12,7 +12,9 @@ Vagrant.configure('2') do |config|
       mount_options: ['dmode=777', 'fmode=666']
     }
   end
-  config.vm.synced_folder '.', '/vagrant', disabled: true
+  #config.vm.synced_folder '.', '/vagrant', disabled: true
+
+  config.vm.network 'forwarded_port', guest: 80, host: 20192
 
   config.vm.provider 'virtualbox' do |vb|
     # Don't boot with headless mode
@@ -35,7 +37,7 @@ Vagrant.configure('2') do |config|
   end
 
   config.vm.provision 'ansible' do |ansible|
-    ansible.playbook = 'provision/playbook.yml'
+    ansible.playbook = ENV['ANSIBLE_PLAYBOOK'] || 'provision/playbook.yml'
     #ansible.inventory_path = 'provision/inventory/vagrant'
     ansible.verbose = ENV['ANSIBLE_VERBOSE'] if ENV['ANSIBLE_VERBOSE']
     ansible.tags = ENV['ANSIBLE_TAGS'] if ENV['ANSIBLE_TAGS']

@@ -1,0 +1,128 @@
+---
+- hosts: all
+  become: no
+  gather_facts: no
+  vars_files:
+  - vars/{{ stage }}.yml
+
+  tasks:
+  - name: '0 My Template App Certificates'
+    with_items: "{{ zbx_template_app_certificates }}"
+    zabbix_template:
+      login_user: "{{ zbx_login_user }}"
+      login_password: "{{ zbx_login_password }}"
+      server_url: "{{ zbx_server_url }}"
+      state: present
+      #link_templates:
+      #macros:
+      template_name: '0 My Template App {{ item.name }} Certificate'
+      template_groups:
+      - '0 Certificate Templates'
+      - '0 My Templates'
+      template_json:
+        zabbix_export:
+          version: '3.0'
+          groups:
+          - name: '0 Certificate Templates'
+          - name: '0 My Templates'
+          templates:
+          - applications:
+            - name: 'Cert Remaining'
+            description: ''
+            discovery_rules: []
+            groups:
+            - name: '0 Certificate Templates'
+            - name: '0 My Templates'
+            items:
+            - allowed_hosts: ''
+              applications:
+              - name: 'Cert Remaining'
+              authtype: '0'
+              data_type: '0'
+              delay: '3600'
+              delay_flex: ''
+              delta: '0'
+              description: ''
+              formula: '1'
+              history: '7'
+              inventory_link: '0'
+              ipmi_sensor: ''
+              key: 'sslnotafter.rb["{HOST.CONN}",{{ item.port }}]'
+              logtimefmt: ''
+              multiplier: '0'
+              name: '0 {{ item.name }} Cert Remaining'
+              params: ''
+              password: ''
+              port: ''
+              privatekey: ''
+              publickey: ''
+              snmp_community: ''
+              snmp_oid: ''
+              snmpv3_authpassphrase: ''
+              snmpv3_authprotocol: '0'
+              snmpv3_contextname: ''
+              snmpv3_privpassphrase: ''
+              snmpv3_privprotocol: '0'
+              snmpv3_securitylevel: '0'
+              snmpv3_securityname: ''
+              status: '0'
+              trends: '3650'
+              type: '10'
+              units: 'uptime'
+              username: ''
+              value_type: '0'
+              valuemap: []
+            macros: []
+            name: '0 My Template App {{ item.name }} Certificate'
+            screens: []
+            template: '0 My Template App {{ item.name }} Certificate'
+            templates: []
+          triggers:
+          - dependencies: []
+            description: ''
+            expression: '{0 My Template App {{ item.name }} Certificate:sslnotafter.rb["{HOST.CONN}",{{ item.port }}].last(0)}<604800'
+            name: '{{ item.name }} Cert is about to expire on {HOST.NAME} (7 days)'
+            priority: '4'
+            status: '0'
+            type: '0'
+            url: ''
+          - dependencies: []
+            description: ''
+            expression: '{0 My Template App {{ item.name }} Certificate:sslnotafter.rb["{HOST.CONN}",{{ item.port }}].last(0)}<1209600'
+            name: '{{ item.name }} Cert is about to expire on {HOST.NAME} (14 days)'
+            priority: '3'
+            status: '0'
+            type: '0'
+            url: ''
+          - dependencies: []
+            description: ''
+            expression: '{0 My Template App {{ item.name }} Certificate:sslnotafter.rb["{HOST.CONN}",{{ item.port }}].last(0)}<2592000'
+            name: '{{ item.name }} Cert is about to expire on {HOST.NAME} (30 days)'
+            priority: '2'
+            status: '0'
+            type: '0'
+            url: ''
+          - dependencies: []
+            description: ''
+            expression: '{0 My Template App {{ item.name }} Certificate:sslnotafter.rb["{HOST.CONN}",{{ item.port }}].last(0)}<2678400'
+            name: '{{ item.name }} Cert is about to expire on {HOST.NAME} (31 days)'
+            priority: '1'
+            status: '0'
+            type: '0'
+            url: ''
+          - dependencies: []
+            description: ''
+            expression: '{0 My Template App {{ item.name }} Certificate:sslnotafter.rb["{HOST.CONN}",{{ item.port }}].last(0)}<0'
+            name: '{{ item.name }} Cert is expired on {HOST.NAME}'
+            priority: '5'
+            status: '0'
+            type: '0'
+            url: ''
+          - dependencies: []
+            description: ''
+            expression: '{0 My Template App {{ item.name }} Certificate:sslnotafter.rb["{HOST.CONN}",{{ item.port }}].change(0)}>0'
+            name: '{{ item.name }} Cert is renewal on {HOST.NAME}'
+            priority: '1'
+            status: '0'
+            type: '0'
+            url: ''

@@ -20,3 +20,54 @@ nadoka:
   irc_pass: "nil"
   irc_ssl_params: '{}'
   channel_info: "'#private' => { key: 'channelkey' }"
+
+# zabbix
+zbx_dbname: 'zabbix'
+zbx_dbuser: 'zabbix'
+zbx_dbpass: 'zabbixdbpass'
+zbx_server_name: 'zabbix-in-vagrant'
+zbx_login_user: 'Admin'
+zbx_login_password: 'zabbix'
+zbx_server_url: 'http://localhost/zabbix/'
+
+zbx_host_groups:
+- '0 Certificate Templates'
+- '0 My Templates'
+- '1 Certificate'
+- '1 nasne'
+- '1 ping監視'
+- '1 Routers'
+- '1 VPS'
+- '2 fprog.org'
+- '2 n-z.jp'
+- '3 lilo'
+- '3 misc'
+- '3 ruby-lang'
+
+zbx_template_app_certificates:
+- name: 'HTTPS'
+  port: 443
+- name: 'IMAPS'
+  port: 993
+- name: 'SMTPS'
+  port: 465
+- name: 'LDAPS'
+  port: 636
+- name: 'POP3S'
+  port: 995
+
+zbx_hosts:
+- host_name: '3 lilo.linux.or.jp'
+  host_groups:
+  - '1 Certificate'
+  - '1 ping監視'
+  - '1 VPS'
+  dns: 'lilo.linux.or.jp'
+  link_templates:
+  - 'Template Module ICMP Ping'
+  - '0 My Template App HTTPS Certificate'
+
+zbx_hostmacros:
+- host_name: '3 lilo.linux.or.jp'
+  macro_name: 'ICMP_RESPONSE_TIME_WARN'
+  macro_value: '0.2'

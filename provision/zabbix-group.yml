@@ -1,0 +1,15 @@
+---
+- hosts: all
+  become: no
+  gather_facts: no
+  vars_files:
+  - vars/{{ stage }}.yml
+
+  tasks:
+  - name: 'Create host groups'
+    zabbix_group:
+      host_groups: "{{ zbx_host_groups }}"
+      login_user: "{{ zbx_login_user }}"
+      login_password: "{{ zbx_login_password }}"
+      server_url: "{{ zbx_server_url }}"
+      state: present

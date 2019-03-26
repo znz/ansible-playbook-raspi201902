@@ -1,0 +1,27 @@
+---
+- hosts: all
+  become: no
+  gather_facts: no
+  vars_files:
+  - vars/{{ stage }}.yml
+
+  tasks:
+  - name: 'zabbix hosts'
+    with_items: '{{ zbx_hosts }}'
+    zabbix_host:
+      host_groups: '{{ item.host_groups }}'
+      host_name: '{{ item.host_name }}'
+      interfaces:
+      - dns: '{{ item.dns|default("") }}'
+        ip: '{{ item.ip|default("") }}'
+        main: 1
+        port: 10050
+        type: agent
+        useip: '{% if "ip" in item %}1{% else %}0{% endif %}'
+      link_templates: '{{ item.link_templates }}'
+      login_user: "{{ zbx_login_user }}"
+      login_password: "{{ zbx_login_password }}"
+      # proxy:
+      server_url: "{{ zbx_server_url }}"
+      state: present
+      status: "{{ item.status|default('enabled') }}"
