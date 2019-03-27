@@ -52,12 +52,17 @@
     shell: "zcat /usr/share/doc/zabbix-server-pgsql/create.sql.gz | sudo -u zabbix psql {{ zbx_dbname }}"
     when: createdb.changed
 
+  - name: "Install fonts"
+    apt:
+      name:
+      - "fonts-noto-cjk"
+      - "fonts-ipafont"
+  # zabbix-frontend-php checks /etc/alternatives/{ttf,fonts}-japanese-gothic.ttf in postinst
   - name: "Install zabbix-frontend-php"
     apt:
       name:
       - "zabbix-frontend-php"
       - "php-pgsql"
-      - "fonts-noto-cjk"
     notify: reload zabbix-server
   - name: "Add zabbix-timezone.conf"
     copy:
