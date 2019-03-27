@@ -24,6 +24,8 @@
       port: 22
     - comment: "SMTPS"
       port: 465
+    - comment: "zabbix agent"
+      port: 10050
   - role: znz.sshd
   - role: znz.unattended-upgrades
   - role: znz.nadoka
