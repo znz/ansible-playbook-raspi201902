@@ -1,9 +1,10 @@
 ---
-- name: "Install curl,jq"
+- name: "Install curl,jq,zabbix-sender"
   apt:
     name:
     - curl
     - jq
+    - zabbix-sender
 
 # ufw out port
 - name: "Allow out to NASNE"
