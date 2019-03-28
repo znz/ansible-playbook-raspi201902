@@ -1,0 +1,3 @@
+---
+- include: alert.yml tags=zabbix,zabbix-alert
+- include: nasne.yml tags=zabbix,zabbix-nasne
