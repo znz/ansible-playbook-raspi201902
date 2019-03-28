@@ -135,8 +135,8 @@
     file:
       path: '/etc/zabbix/externalscripts'
       owner: 'root'
-      group: 'root'
-      mode: 0755
+      group: 'zabbix'
+      mode: 0750
       state: directory
   - name: 'Add local.conf'
     copy:
