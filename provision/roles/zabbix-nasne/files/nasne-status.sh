@@ -14,8 +14,8 @@ JSON=$(curl -s "http://$NASNE_IP:64210/status/HDDInfoGet?id=0")
 usedVolumeSize=$(echo "$JSON" | jq -r '.HDD.usedVolumeSize')
 freeVolumeSize=$(echo "$JSON" | jq -r '.HDD.freeVolumeSize')
 {
-    echo "- nasne.hdd.free $usedVolumeSize"
-    echo "- nasne.hdd.used $freeVolumeSize"
+    echo "- nasne.hdd.free $freeVolumeSize"
+    echo "- nasne.hdd.used $usedVolumeSize"
 } | sender
 
 JSON=$(curl -s "http://$NASNE_IP:64210/status/dtcpipClientListGet")
