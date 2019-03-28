@@ -144,6 +144,7 @@
         StartPingers=3
         Timeout=30
         ExternalScripts=/etc/zabbix/externalscripts
+        AlertScriptsPath=/etc/zabbix/alert.d
       dest: '/etc/zabbix/zabbix_server.conf.d/local.conf'
       owner: 'root'
       group: 'zabbix'
