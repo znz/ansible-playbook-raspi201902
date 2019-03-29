@@ -86,7 +86,9 @@
             status: '0'
             type: '0'
             url: ''
-          - dependencies: []
+          - dependencies:
+            - name: '{{ item.name }} Cert is about to expire on {HOST.NAME} (7 days)'
+              expression: '{0 My Template App {{ item.name }} Certificate:sslnotafter.rb["{HOST.CONN}",{{ item.port }}].last(0)}<604800'
             description: ''
             expression: '{0 My Template App {{ item.name }} Certificate:sslnotafter.rb["{HOST.CONN}",{{ item.port }}].last(0)}<1209600'
             name: '{{ item.name }} Cert is about to expire on {HOST.NAME} (14 days)'
@@ -94,7 +96,9 @@
             status: '0'
             type: '0'
             url: ''
-          - dependencies: []
+          - dependencies:
+            - name: '{{ item.name }} Cert is about to expire on {HOST.NAME} (14 days)'
+              expression: '{0 My Template App {{ item.name }} Certificate:sslnotafter.rb["{HOST.CONN}",{{ item.port }}].last(0)}<1209600'
             description: ''
             expression: '{0 My Template App {{ item.name }} Certificate:sslnotafter.rb["{HOST.CONN}",{{ item.port }}].last(0)}<2592000'
             name: '{{ item.name }} Cert is about to expire on {HOST.NAME} (30 days)'
@@ -102,7 +106,9 @@
             status: '0'
             type: '0'
             url: ''
-          - dependencies: []
+          - dependencies:
+            - name: '{{ item.name }} Cert is about to expire on {HOST.NAME} (30 days)'
+              expression: '{0 My Template App {{ item.name }} Certificate:sslnotafter.rb["{HOST.CONN}",{{ item.port }}].last(0)}<2592000'
             description: ''
             expression: '{0 My Template App {{ item.name }} Certificate:sslnotafter.rb["{HOST.CONN}",{{ item.port }}].last(0)}<2678400'
             name: '{{ item.name }} Cert is about to expire on {HOST.NAME} (31 days)'
@@ -110,7 +116,9 @@
             status: '0'
             type: '0'
             url: ''
-          - dependencies: []
+          - dependencies:
+            - name: '{{ item.name }} Cert is about to expire on {HOST.NAME} (31 days)'
+              expression: '{0 My Template App {{ item.name }} Certificate:sslnotafter.rb["{HOST.CONN}",{{ item.port }}].last(0)}<2678400'
             description: ''
             expression: '{0 My Template App {{ item.name }} Certificate:sslnotafter.rb["{HOST.CONN}",{{ item.port }}].last(0)}<0'
             name: '{{ item.name }} Cert is expired on {HOST.NAME}'
