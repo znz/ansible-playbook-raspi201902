@@ -12,6 +12,7 @@
       login_user: "{{ zbx_login_user }}"
       login_password: "{{ zbx_login_password }}"
       server_url: "{{ zbx_server_url }}"
+      timeout: 30
       state: present
       #link_templates:
       #macros:
