@@ -40,7 +40,7 @@
     become_user: postgres
     postgresql_user:
       name: "{{ zbx_dbuser }}"
-      password: "{{ zbx_dbpass }}"
+      password: "md5{{ (zbx_dbpass + zbx_dbuser) | md5 }}"
       role_attr_flags: "NOSUPERUSER,NOCREATEROLE,NOCREATEDB"
   - name: "createdb"
     become_user: postgres
