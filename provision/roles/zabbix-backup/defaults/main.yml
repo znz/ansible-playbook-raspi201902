@@ -1,0 +1,3 @@
+---
+zabbix_backup_directory: "/srv/zabbix-backup"
+zabbix_backup_keep_days: 90

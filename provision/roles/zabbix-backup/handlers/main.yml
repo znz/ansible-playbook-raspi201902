@@ -1,0 +1,7 @@
+---
+- name: enable a timer for zabbix-backup
+  systemd:
+    name: zabbix-backup.timer
+    state: started
+    enabled: yes
+    daemon_reload: yes

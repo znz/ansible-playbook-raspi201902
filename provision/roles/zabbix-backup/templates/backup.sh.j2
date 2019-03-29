@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+DUMP_DIR="{{ zabbix_backup_directory }}"
+install -o root -g root -m 0700 -d "$DUMP_DIR"
+su postgres -c "pg_dump -Fc {{ zbx_dbname }}" >"$DUMP_DIR/{{ zbx_dbname }}.$(date +%Y%m%d%H%M%S).pg_dump"
+find "$DUMP_DIR" -mtime +{{ zabbix_backup_keep_days }} -delete
