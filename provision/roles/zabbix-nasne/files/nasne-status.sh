@@ -68,6 +68,6 @@ fi
 {
     echo "- nasne.status.rec $rec"
     if [ "$rec_start" -eq 1 ]; then
-        echo "- nasne.info.rec $new_rec_info"
+        echo "- nasne.log.rec $new_rec_info"
     fi
 } | sender
