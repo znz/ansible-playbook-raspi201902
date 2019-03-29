@@ -499,16 +499,16 @@
           triggers:
           - dependencies: []
             description: ''
-            expression: '{0 Template nasne monitor:nasne.hdd.free.percent.last()}<5'
-            name: 'disk free < 5%'
+            expression: '{0 Template nasne monitor:nasne.hdd.free.percent.last()}<1'
+            name: 'disk free < 1%'
             priority: '4'
             status: '0'
             type: '0'
             url: ''
           - dependencies: []
             description: ''
-            expression: '{0 Template nasne monitor:nasne.hdd.free.percent.last()}<20'
-            name: 'disk free < 20%'
+            expression: '{0 Template nasne monitor:nasne.hdd.free.percent.last()}<3'
+            name: 'disk free < 3%'
             priority: '3'
             status: '0'
             type: '0'
