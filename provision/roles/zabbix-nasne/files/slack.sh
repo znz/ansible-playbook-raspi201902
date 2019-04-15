@@ -88,4 +88,4 @@ payload="payload={
     }
   ]
 }"
-curl -m 5 --data-urlencode "${payload}" "$url"
+curl -sS -m 5 --data-urlencode "${payload}" "$url"
