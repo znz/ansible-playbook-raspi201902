@@ -29,3 +29,4 @@
   - role: znz.sshd
   - role: znz.unattended-upgrades
   - role: znz.nadoka
+  - role: znz.timesyncd
