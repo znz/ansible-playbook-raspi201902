@@ -80,7 +80,7 @@
               status_codes: '200'
               timeout: '3s'
               trends: '3650d'
-              type: '10'
+              type: '0'
               units: 'uptime'
               url: ''
               username: ''
