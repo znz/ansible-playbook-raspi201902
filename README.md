@@ -12,6 +12,8 @@
 - `ansible-playbook -i provision/inventory/production provision/zabbix-host.yml`
 - `ansible-playbook -i provision/inventory/production provision/zabbix-hostmacro.yml`
 - `ansible-playbook -i provision/inventory/production provision/zabbix-nasne.yml -b -K`
+- `ansible-playbook -i provision/inventory/production provision/zabbix-bluetooth-setup.yml -b -K`
+- `ansible-playbook -i provision/inventory/production provision/zabbix-bluetooth.yml`
 
 ## Development
 
@@ -24,3 +26,5 @@
 - `env ANSIBLE_PLAYBOOK=provision/zabbix-host.yml vagrant provision`
 - `env ANSIBLE_PLAYBOOK=provision/zabbix-hostmacro.yml vagrant provision`
 - `env ANSIBLE_PLAYBOOK=provision/zabbix-nasne.yml vagrant provision`
+- `env ANSIBLE_PLAYBOOK=provision/zabbix-bluetooth-setup.yml vagrant provision`
+- `env ANSIBLE_PLAYBOOK=provision/zabbix-bluetooth.yml vagrant provision`
