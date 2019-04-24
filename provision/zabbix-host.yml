@@ -25,3 +25,7 @@
       server_url: "{{ zbx_server_url }}"
       state: present
       status: "{{ item.status|default('enabled') }}"
+      tls_accept: "{{ item.tls_accept|default(1) }}"
+      tls_connect: "{{ item.tls_connect|default(1) }}"
+      tls_psk: "{{ item.tls_psk|default(1) }}"
+      tls_psk_identity: "{{ item.tls_psk_identity|default(1) }}"
