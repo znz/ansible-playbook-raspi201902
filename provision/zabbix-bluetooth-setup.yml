@@ -1,0 +1,18 @@
+---
+- hosts: all
+  become: no
+  gather_facts: no
+  vars_files:
+  - vars/{{ stage }}.yml
+
+  tasks:
+  - name: '/etc/zabbix/externalscripts/hcitool-name.sh'
+    become: yes
+    copy:
+      content: |
+        #!/bin/sh
+        exec hcitool name "${1?usage:$0 BLUETOOTH_MAC_ADDRESS}"
+      dest: '/etc/zabbix/externalscripts/hcitool-name.sh'
+      owner: 'root'
+      group: 'zabbix'
+      mode: 0750
