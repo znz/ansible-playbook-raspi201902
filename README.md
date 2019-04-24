@@ -9,6 +9,7 @@
 - `ansible-playbook -i provision/inventory/production provision/zabbix-group.yml`
 - `ansible-playbook -i provision/inventory/production provision/zabbix-template-cert.yml`
 - `ansible-playbook -i provision/inventory/production provision/zabbix-template-nasne.yml`
+- `ansible-playbook -i provision/inventory/production provision/zabbix-template-openvpn.yml`
 - `ansible-playbook -i provision/inventory/production provision/zabbix-host.yml`
 - `ansible-playbook -i provision/inventory/production provision/zabbix-hostmacro.yml`
 - `ansible-playbook -i provision/inventory/production provision/zabbix-nasne.yml -b -K`
@@ -23,6 +24,7 @@
 - `env ANSIBLE_PLAYBOOK=provision/zabbix-group.yml vagrant provision`
 - `env ANSIBLE_PLAYBOOK=provision/zabbix-template-cert.yml vagrant provision`
 - `env ANSIBLE_PLAYBOOK=provision/zabbix-template-nasne.yml vagrant provision`
+- `env ANSIBLE_PLAYBOOK=provision/zabbix-template-openvpn.yml vagrant provision`
 - `env ANSIBLE_PLAYBOOK=provision/zabbix-host.yml vagrant provision`
 - `env ANSIBLE_PLAYBOOK=provision/zabbix-hostmacro.yml vagrant provision`
 - `env ANSIBLE_PLAYBOOK=provision/zabbix-nasne.yml vagrant provision`
