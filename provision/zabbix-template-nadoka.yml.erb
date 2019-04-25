@@ -165,7 +165,7 @@
             correlation_tag: ''
             dependencies: []
             description: ''
-            expression: '{0 My Template nadoka log:nadoka.stat.fprog.delta(1h)}=0 or {0 My Template nadoka log:nadoka.stat.fprog.nodata(1h)}=1'
+            expression: '{0 My Template nadoka log:nadoka.stat.fprog.delta(2h)}=0 or {0 My Template nadoka log:nadoka.stat.fprog.nodata(2h)}=1'
             manual_close: '1'
             name: 'nadoka log fprog stopped'
             priority: '4'
@@ -180,7 +180,7 @@
             correlation_tag: ''
             dependencies: []
             description: ''
-            expression: '{0 My Template nadoka log:nadoka.stat.atig[<%= username %>].delta(1h)}=0 or {0 My Template nadoka log:nadoka.stat.atig[<%= username %>].nodata(1h)}=1'
+            expression: '{0 My Template nadoka log:nadoka.stat.atig[<%= username %>].delta(2h)}=0 or {0 My Template nadoka log:nadoka.stat.atig[<%= username %>].nodata(2h)}=1'
             manual_close: '1'
             name: 'nadoka log atig <%= username %> stopped'
             priority: '4'
