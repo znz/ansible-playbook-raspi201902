@@ -15,6 +15,7 @@
       group: 'zabbix'
       mode: 0750
       state: directory
+
   - name: '/etc/zabbix/externalscripts/sslnotafter.rb'
     copy:
       content: |
@@ -46,6 +47,22 @@
           puts cert.not_after - Time.now
         end
       dest: '/etc/zabbix/externalscripts/sslnotafter.rb'
+      owner: 'root'
+      group: 'zabbix'
+      mode: 0750
+
+  - name: '/etc/zabbix/externalscripts/lastmodified.rb'
+    copy:
+      content: |
+        #!/usr/bin/ruby
+        # -*- coding: utf-8 -*-
+        # frozen_string_literal: true
+        require 'open3'
+        require 'time'
+        uri = ARGV.shift
+        out, _status = Open3.capture2e('curl', '-sS', '--head', uri)
+        p Time.rfc822(out[/^Last-Modified: (.*)/, 1]).to_i
+      dest: '/etc/zabbix/externalscripts/lastmodified.rb'
       owner: 'root'
       group: 'zabbix'
       mode: 0750
