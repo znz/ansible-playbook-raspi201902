@@ -1,0 +1,126 @@
+<%# -*- yaml -*- %>
+---
+- hosts: all
+  become: no
+  gather_facts: no
+  vars_files:
+  - vars/{{ stage }}.yml
+
+  tasks:
+  - name: '0 My Template ruby-snapshot'
+    zabbix_template:
+      login_user: "{{ zbx_login_user }}"
+      login_password: "{{ zbx_login_password }}"
+      server_url: "{{ zbx_server_url }}"
+      timeout: 30
+      state: present
+      #link_templates:
+      #macros:
+      template_name: '0 My Template ruby-snapshot'
+      template_groups:
+      - '0 My Templates'
+      template_json:
+        zabbix_export:
+          version: '4.0'
+          groups:
+          - name: '0 My Templates'
+          templates:
+<%
+archives = %w[
+  snapshot.tar.bz2
+  snapshot.tar.gz
+  snapshot.tar.xz
+  snapshot.zip
+  stable-snapshot.tar.bz2
+  stable-snapshot.tar.gz
+  stable-snapshot.tar.xz
+  stable-snapshot.zip
+]
+%>
+<% archives.each do |snapshot_archive| %>
+          - applications:
+            - name: 'ruby-snapshot'
+            description: ''
+            discovery_rules: []
+            groups:
+            - name: '0 My Templates'
+            items:
+            - allowed_hosts: ''
+              applications:
+              - name: 'ruby-snapshot'
+              allow_traps: '0'
+              authtype: '0'
+              delay: '1h'
+              description: ''
+              follow_redirects: '1'
+              headers: []
+              history: '90d'
+              http_proxy: ''
+              inventory_link: '0'
+              ipmi_sensor: ''
+              jmx_endpoint: ''
+              key: 'lastmodified.rb[https://cache.ruby-lang.org/pub/ruby/<%= snapshot_archive %>]'
+              logtimefmt: ''
+              master_item: ''
+              name: '<%= snapshot_archive %>'
+              output_format: '0'
+              params: ''
+              password: ''
+              port: ''
+              posts: ''
+              post_type: '0'
+              preprocessing: ''
+              privatekey: ''
+              publickey: ''
+              query_fields: []
+              request_method: '0'
+              retrieve_mode: '0'
+              snmp_community: ''
+              snmp_oid: ''
+              snmpv3_authpassphrase: ''
+              snmpv3_authprotocol: '0'
+              snmpv3_contextname: ''
+              snmpv3_privpassphrase: ''
+              snmpv3_privprotocol: '0'
+              snmpv3_securitylevel: '0'
+              snmpv3_securityname: ''
+              ssl_cert_file: ''
+              ssl_key_file: ''
+              ssl_key_password: ''
+              status: '0'
+              status_codes: '200'
+              timeout: '3s'
+              trends: '365d'
+              type: '10'
+              units: 'unixtime'
+              url: ''
+              username: ''
+              value_type: '3'
+              valuemap: []
+              verify_host: '0'
+              verify_peer: '0'
+            httptests: []
+            macros: []
+            name: '0 My Template ruby-snapshot'
+            screens: []
+            template: '0 My Template ruby-snapshot'
+            templates: []
+<% end %>
+
+          triggers:
+<% archives.each do |snapshot_archive| %>
+          - correlation_mode: '0'
+            correlation_tag: ''
+            dependencies: []
+            description: ''
+            expression: '{0 My Template ruby-snapshot:lastmodified.rb[https://cache.ruby-lang.org/pub/ruby/<%= snapshot_archive %>].delta(2d)}=0 or {0 My Template ruby-snapshot:lastmodified.rb[https://cache.ruby-lang.org/pub/ruby/<%= snapshot_archive %>].nodata(2d)}=1'
+            manual_close: '1'
+            name: '<%= snapshot_archive %> stopped'
+            priority: '4'
+            recovery_expression: ''
+            recovery_mode: '0'
+            status: '0'
+            tags: []
+            type: '0'
+            url: ''
+<% end %>
