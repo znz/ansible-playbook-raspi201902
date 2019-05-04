@@ -109,7 +109,7 @@
             name: 'Bluetooth status changed'
             priority: '1'
             recovery_expression: ''
-            recovery_mode: '2'
+            recovery_mode: '0'
             status: '0'
             tags: []
             type: '0'
