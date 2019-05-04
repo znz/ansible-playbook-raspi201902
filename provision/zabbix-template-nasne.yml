@@ -679,7 +679,7 @@
             description: ''
             expression: '{0 Template nasne monitor:nasne.log.rec.diff(0)}=1 and {0 Template nasne monitor:nasne.status.rec.last(#1)}=1'
             manual_close: '0'
-            name: 'Recording start'
+            name: 'Recording'
             priority: '1'
             recovery_expression: ''
             recovery_mode: '0'
