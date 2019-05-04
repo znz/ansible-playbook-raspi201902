@@ -30,3 +30,10 @@
   - role: znz.unattended-upgrades
   - role: znz.nadoka
   - role: znz.timesyncd
+  - role: znz.openvpn-client
+  tasks:
+  - sysctl:
+      name: net.ipv4.ip_forward
+      value: 1
+      sysctl_file: "/etc/sysctl.d/50-local.conf"
+      sysctl_set: yes
