@@ -10,7 +10,7 @@
     zabbix_host:
       host_groups:
       - '1 Certificate'
-      - '1 ping監視'
+      - '1 ping check'
       - '1 VPS'
       host_name: '3 lilo.linux.or.jp'
       interfaces:

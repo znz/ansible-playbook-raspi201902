@@ -35,7 +35,7 @@ zbx_host_groups:
 - '0 My Templates'
 - '1 Certificate'
 - '1 nasne'
-- '1 ping監視'
+- '1 ping check'
 - '1 Routers'
 - '1 VPS'
 - '2 fprog.org'
@@ -60,7 +60,7 @@ zbx_hosts:
 - host_name: '3 lilo.linux.or.jp'
   host_groups:
   - '1 Certificate'
-  - '1 ping監視'
+  - '1 ping check'
   - '1 VPS'
   dns: 'lilo.linux.or.jp'
   link_templates:
