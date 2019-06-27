@@ -685,5 +685,5 @@
             recovery_mode: '0'
             status: '0'
             tags: []
-            type: '0'
+            type: '1'
             url: ''
