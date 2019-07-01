@@ -13,10 +13,6 @@ sender () {
 JSON=$(curl -s "http://$NASNE_IP:64210/status/HDDInfoGet?id=0")
 usedVolumeSize=$(echo "$JSON" | jq -r '.HDD.usedVolumeSize')
 freeVolumeSize=$(echo "$JSON" | jq -r '.HDD.freeVolumeSize')
-{
-    echo "- nasne.hdd.free $freeVolumeSize"
-    echo "- nasne.hdd.used $usedVolumeSize"
-} | sender
 
 JSON=$(curl -s "http://$NASNE_IP:64210/status/dtcpipClientListGet")
 play=$(echo "$JSON" | jq -r '.number')
@@ -25,10 +21,6 @@ if [ "$(echo "$JSON" | jq -r '.client')" = "null" ]; then
 else
     live=$(echo "$JSON" | jq -r '.client | map(select(.liveInfo)) | length')
 fi
-{
-    echo "- nasne.status.play $play"
-    echo "- nasne.status.live $live"
-} | sender
 
 # 番組終了直後も録画状態が続いているので、その時の情報取得を避けるために少し sleep
 # していたが、開始時刻をずらしたのでコメントアウト
@@ -66,8 +58,12 @@ if [ "$rec_start" -eq 1 -a -n "$NOTICE_SOCK" ]; then
     /etc/zabbix/alert.d/notice.rb "$NOTICE_SOCK" "$NASNE_HOSTNAME $new_rec_info"
 fi
 {
-    echo "- nasne.status.rec $rec"
     if [ "$rec_start" -eq 1 ]; then
         echo "- nasne.log.rec $new_rec_info"
     fi
+    echo "- nasne.hdd.free $freeVolumeSize"
+    echo "- nasne.hdd.used $usedVolumeSize"
+    echo "- nasne.status.play $play"
+    echo "- nasne.status.live $live"
+    echo "- nasne.status.rec $rec"
 } | sender
